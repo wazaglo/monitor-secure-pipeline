@@ -1,0 +1,195 @@
+groups:
+  - name: services
+    rules:
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: 'Service {{ $labels.job }} is down'
+          description: 'The {{ $labels.job }} target has been unreachable for more than 1 minute.'
+
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(http_requests_total{status=~"5.."}[5m])) by (route)
+            / clamp_min(sum(rate(http_requests_total[5m])) by (route), 1)
+            > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: 'High 5xx error rate on {{ $labels.route }}'
+          description: 'Error rate on {{ $labels.route }} has exceeded 5% for the last 5 minutes.'
+
+      - alert: SlowRequests
+        expr: |
+          histogram_quantile(
+            0.95,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le, route)
+          ) > 1.5
+        for: 10m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: 'P95 latency high on {{ $labels.route }}'
+          description: 'P95 latency on {{ $labels.route }} has been above 1.5s for 10 minutes.'
+
+      - alert: UpstreamUnavailable
+        expr: |
+          sum(rate(api_gateway_backend_down_total[5m])) > 0
+        for: 2m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: 'API gateway cannot reach a backend service'
+          description: 'The API gateway has been unable to reach a backend service for more than 2 minutes.'
+
+  - name: application
+    rules:
+      - alert: OrderFailures
+        expr: |
+          sum(increase(orders_created_total[10m])) < 1
+        for: 10m
+        labels:
+          severity: warning
+          team: commerce
+        annotations:
+          summary: 'No orders are being created'
+          description: 'No orders were created in the last 10 minutes.'
+
+      - alert: PaymentFailures
+        expr: |
+          sum(increase(payments_processed_total[10m])) < 1
+        for: 10m
+        labels:
+          severity: warning
+          team: commerce
+        annotations:
+          summary: 'No payments are being processed'
+          description: 'No payments were processed in the last 10 minutes.'
+
+      - alert: LowStock
+        expr: |
+          products_stock < 20
+        for: 10m
+        labels:
+          severity: warning
+          team: commerce
+        annotations:
+          summary: 'Product {{ $labels.product_id }} is low on stock'
+          description: 'Product {{ $labels.product_id }} has {{ $value }} units in stock.'
+
+  - name: infrastructure
+    rules:
+      - alert: HighCPUUsage
+        expr: |
+          sum(rate(container_cpu_usage_seconds_total[5m])) > 4
+        for: 10m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: 'Container CPU usage high'
+          description: 'Total container CPU usage has exceeded 4 cores for 10 minutes.'
+
+      - alert: HighMemoryUsage
+        expr: |
+          sum(container_memory_usage_bytes{name!=""}) > 2147483648
+        for: 10m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: 'Container memory usage high'
+          description: 'Total container memory usage has exceeded 2 GiB for 10 minutes.'
+
+      - alert: DiskSpaceRunningOut
+        expr: |
+          (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) < 0.1
+        for: 10m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: 'Disk space below 10%'
+          description: 'Filesystem {{ $labels.mountpoint }} on {{ $labels.instance }} has less than 10% free space.'
+
+      - alert: HighDiskIO
+        expr: |
+          rate(node_disk_io_time_seconds_total[5m]) > 0.5
+        for: 10m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: 'Disk I/O saturation'
+          description: 'Disk I/O time on {{ $labels.instance }} has been above 50% for 10 minutes.'
+
+      - alert: LoadAverageHigh
+        expr: |
+          node_load1 / on(instance) group_left count(node_cpu_seconds_total{mode="user"}) > 2
+        for: 10m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: 'Load average high'
+          description: 'Load average on {{ $labels.instance }} exceeds 2x the number of CPUs.'
+
+  - name: telemetry
+    rules:
+      - alert: MetricsPipelineDown
+        expr: |
+          up{job="otelcol"} == 0 or
+          up{job="prometheus"} == 0 or
+          up{job="loki"} == 0 or
+          up{job="tempo"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          team: platform
+        annotations:
+          summary: 'A telemetry component is down'
+          description: 'One of the core telemetry backends is unreachable for more than 2 minutes.'
+
+      - alert: TraceVolumeDropped
+        expr: |
+          sum(rate(tempo_distributor_spans_received_total[5m])) < 1
+        for: 15m
+        labels:
+          severity: warning
+          team: platform
+        annotations:
+          summary: 'Low trace ingestion volume'
+          description: 'Tempo has been receiving fewer than 1 span per second in the last 15 minutes.'
+
+  - name: security
+    rules:
+      - alert: HighSeverityFindings
+        expr: |
+          sum(defectdojo_findings{severity="critical"}) > 0
+            or
+          sum(defectdojo_findings{severity="high"}) > 0
+        for: 5m
+        labels:
+          severity: critical
+          team: security
+        annotations:
+          summary: 'Critical or high severity findings detected'
+          description: 'DefectDojo currently reports open critical/high findings. See the DefectDojo exporter dashboard for details.'
+
+      - alert: OpenMediumFindings
+        expr: |
+          sum(defectdojo_findings{severity="medium"}) > 20
+        for: 10m
+        labels:
+          severity: warning
+          team: security
+        annotations:
+          summary: 'Many medium severity findings'
+          description: 'More than 20 open medium findings are tracked in DefectDojo.'

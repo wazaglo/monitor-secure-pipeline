@@ -1,0 +1,29 @@
+site_name: Monitor Secure Pipeline
+site_description: End-to-end observability platform for the secure-pipeline DevSecOps CI/CD stack.
+repo_url: https://github.com/wazaglo/monitor-secure-pipeline
+theme:
+  name: material
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Quickstart: quickstart.md
+  - Services: services.md
+  - Dashboards: dashboards.md
+  - Alerts: alerts.md
+  - Runbooks:
+      - Incident response: runbooks/incident-response.md
+      - Service down: runbooks/service-down.md
+      - Disk full: runbooks/disk-full.md
+      - High error rate: runbooks/high-error-rate.md
+      - Slow traces: runbooks/slow-traces.md
+  - Deploy to AWS: deploy.md
+  - Contributing: contributing.md

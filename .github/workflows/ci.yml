@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate monitoring config
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate docker-compose
+        run: docker compose config --quiet
+
+      - name: Validate remote write receiver flag
+        run: |
+          grep -q -- "--web.enable-remote-write-receiver" docker-compose.yml \
+            || { echo "prometheus missing --web.enable-remote-write-receiver (Tempo metrics generator remote write needs it)"; exit 1; }
+
+      - name: Validate Prometheus rules
+        run: docker run --rm -v "${{ github.workspace }}/monitoring/prometheus:/etc/prometheus" \
+          --entrypoint promtool prom/prometheus:latest check rules /etc/prometheus/rules.yml
+
+      - name: Validate Prometheus config
+        run: docker run --rm -v "${{ github.workspace }}/monitoring/prometheus:/etc/prometheus" \
+          --entrypoint promtool prom/prometheus:latest check config /etc/prometheus/prometheus.yml
+
+      - name: Validate otelcol config
+        run: docker run --rm -v "${{ github.workspace }}/monitoring/otelcol:/config" \
+          otel/opentelemetry-collector-contrib:latest \
+          validate --config=/config/config.yml
+
+      - name: Validate Python services
+        run: |
+          python -m py_compile services/user-service/app.py
+          python -m py_compile services/payment-service/app.py
+          python -m py_compile load-generator/main.py
+          python -m py_compile monitoring/exporters/defectdojo-exporter/main.py
