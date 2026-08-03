@@ -26,7 +26,7 @@ notification channels (email, Slack, PagerDuty).
 | Alert | Severity | Condition |
 | ----- | -------- | --------- |
 | HighCPUUsage | warning | Total container CPU > 4 cores for 10m |
-| HighMemoryUsage | warning | Total container memory > 2 GiB for 10m |
+| HighMemoryUsage | warning | Total container memory > 4 GiB for 10m |
 | DiskSpaceRunningOut | critical | Free space < 10% |
 | HighDiskIO | warning | Disk I/O time > 50% for 10m |
 | LoadAverageHigh | warning | Load > 2x CPU count for 10m |

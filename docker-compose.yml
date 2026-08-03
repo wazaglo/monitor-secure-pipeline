@@ -235,6 +235,8 @@ services:
       - DD_API_URL=${DD_API_URL:-http://defectdojo:8080}
       - DD_API_TOKEN=${DD_API_TOKEN:-}
       - SCRAPE_INTERVAL=30
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
     networks:
       - msp

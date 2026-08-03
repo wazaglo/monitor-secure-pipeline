@@ -40,11 +40,14 @@ def scrape():
             ftype = (finding.get("title") or "unknown").split(" ")[0].lower()
             product = "unknown"
             test = finding.get("test")
-            if test and test.get("engagement"):
-                engagement = test["engagement"]
-                product = engagement.get("product") or (engagement.get("name") or "unknown")
-                if not isinstance(product, str):
-                    product = "unknown"
+            if isinstance(test, dict):
+                engagement = test.get("engagement")
+                if isinstance(engagement, dict):
+                    product = engagement.get("product") or (engagement.get("name") or "unknown")
+            elif isinstance(test, (int, str)):
+                product = "unknown"
+            if not isinstance(product, str):
+                product = "unknown"
             key = (severity, ftype, str(product))
             found[key] = found.get(key, 0) + 1
         metrics = found
