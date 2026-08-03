@@ -200,6 +200,12 @@ func proxy(name, base, apiRoute, svcRoute string) http.HandlerFunc {
 		w.WriteHeader(resp.StatusCode)
 		_, _ = w.Write(body)
 
+		logger.Info("proxied request",
+			"backend", name,
+			"method", "PATH: "+r.URL.Path,
+			"status", resp.StatusCode,
+		)
+
 		span.SetAttributes(attribute.Int("http.status_code", resp.StatusCode))
 		if resp.StatusCode >= 500 {
 			errCounter.Add(1)
