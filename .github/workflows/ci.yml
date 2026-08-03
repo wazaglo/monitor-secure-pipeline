@@ -23,17 +23,20 @@ jobs:
             || { echo "prometheus missing --web.enable-remote-write-receiver (Tempo metrics generator remote write needs it)"; exit 1; }
 
       - name: Validate Prometheus rules
-        run: docker run --rm -v "${{ github.workspace }}/monitoring/prometheus:/etc/prometheus" \
-          --entrypoint promtool prom/prometheus:latest check rules /etc/prometheus/rules.yml
+        run: |
+          docker run --rm -v "${{ github.workspace }}/monitoring/prometheus:/etc/prometheus" \
+            --entrypoint promtool prom/prometheus:latest check rules /etc/prometheus/rules.yml
 
       - name: Validate Prometheus config
-        run: docker run --rm -v "${{ github.workspace }}/monitoring/prometheus:/etc/prometheus" \
-          --entrypoint promtool prom/prometheus:latest check config /etc/prometheus/prometheus.yml
+        run: |
+          docker run --rm -v "${{ github.workspace }}/monitoring/prometheus:/etc/prometheus" \
+            --entrypoint promtool prom/prometheus:latest check config /etc/prometheus/prometheus.yml
 
       - name: Validate otelcol config
-        run: docker run --rm -v "${{ github.workspace }}/monitoring/otelcol:/config" \
-          otel/opentelemetry-collector-contrib:latest \
-          validate --config=/config/config.yml
+        run: |
+          docker run --rm -v "${{ github.workspace }}/monitoring/otelcol:/config" \
+            otel/opentelemetry-collector-contrib:latest \
+            validate --config=/config/config.yml
 
       - name: Validate Python services
         run: |
