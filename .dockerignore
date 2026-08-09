@@ -1,1 +1,14 @@
-api-gateway/
+.git
+.github
+.vscode
+.idea
+.env
+.env.*
+!.env.example
+docs/
+terraform/
+*.md
+LICENSE
+Makefile
+.dockerignore
+.gitignore

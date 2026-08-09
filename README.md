@@ -92,6 +92,20 @@ logs streaming into Loki from all 6 services, and distributed traces in Tempo wi
 See [docs](docs/docs/architecture.md) for the full walkthrough of how metrics, logs, and traces
 flow from the apps through the collector and into the storage backends.
 
+## Dashboards
+
+**Overview** — full stack health at a glance:
+
+![Overview Dashboard](docs/assets/dashboard-overview.png)
+
+**Latency** — p50 / p95 / p99 response times across all services:
+
+![Latency Dashboard](docs/assets/dashboard-latency.png)
+
+**Tracing** — distributed traces via Tempo:
+
+![Tracing Dashboard](docs/assets/dashboard-tracing.png)
+
 ## Alerting
 
 16 rules in `monitoring/prometheus/rules.yml`:
