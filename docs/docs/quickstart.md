@@ -46,11 +46,11 @@ curl http://localhost:8080/api/payments/1/invoice
 | Service | URL | Credentials |
 | ------- | --- | ----------- |
 | Grafana | http://localhost:3000 | `admin` / `admin` |
-| Prometheus | http://localhost:9090 | — |
-| Loki | http://localhost:3100 | — |
-| Tempo | http://localhost:3200 | — |
-| Alertmanager | http://localhost:9093 | — |
-| API Gateway | http://localhost:8080/api/info | — |
+| Prometheus | http://localhost:9090 | - |
+| Loki | http://localhost:3100 | - |
+| Tempo | http://localhost:3200 | - |
+| Alertmanager | http://localhost:9093 | - |
+| API Gateway | http://localhost:8080/api/info | - |
 
 ## See data flowing
 

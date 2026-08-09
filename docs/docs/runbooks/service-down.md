@@ -1,6 +1,6 @@
 # Runbook: Service Down
 
-Alert: **ServiceDown** (critical) — `up == 0` for 1 minute.
+Alert: **ServiceDown** (critical): `up == 0` for 1 minute.
 
 ## Symptoms
 
@@ -14,7 +14,7 @@ Alert: **ServiceDown** (critical) — `up == 0` for 1 minute.
 
 From the alert labels read `job` and `instance` (e.g. `job="order-service"`,
 `instance="order-service:8003"`). The demo services expose no native `/metrics`,
-so they do **not** appear as `up` targets — this alert applies to the
+so they do **not** appear as `up` targets. This alert applies to the
 telemetry/exporters (`otelcol`, `prometheus`, `loki`, `tempo`, `alertmanager`,
 `node-exporter`, `cadvisor`, `defectdojo-exporter`).
 
@@ -32,7 +32,7 @@ Common causes:
 | Crash-loop | Container restarts repeatedly; check logs for a panic/exception |
 | OOM | Container exits with code 137; `docker inspect` shows OOMKilled |
 | Bad config | Component refuses to start; logs show config parse error |
-| Depends-on failure | Check `depends_on` ordering — a backend never started |
+| Depends-on failure | Check `depends_on` ordering. A backend never started |
 
 ### 3. Restart
 

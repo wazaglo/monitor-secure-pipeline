@@ -1,6 +1,6 @@
 # Runbook: Disk Full
 
-Alert: **DiskSpaceRunningOut** (critical) — `/` free space below 10%.
+Alert: **DiskSpaceRunningOut** (critical): `/` free space below 10%.
 
 ## Symptoms
 
@@ -34,7 +34,7 @@ Remove unused build cache and dangling images:
 docker system prune -af --volumes
 ```
 
-> `--volumes` deletes all unused named volumes — data loss risk. Prefer targeted
+> `--volumes` deletes all unused named volumes, data loss risk. Prefer targeted
 > removal shown next when you need the data.
 
 ### 4. Trim telemetry data (targeted)

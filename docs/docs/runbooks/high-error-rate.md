@@ -1,6 +1,6 @@
 # Runbook: High Error Rate
 
-Alert: **HighErrorRate** (critical) — 5xx rate > 5% on a route for 5 minutes.
+Alert: **HighErrorRate** (critical): 5xx rate > 5% on a route for 5 minutes.
 
 ## Symptoms
 
@@ -16,7 +16,7 @@ The `route` label on the alert tells you the endpoint. The demo load-generator
 deliberately exercises 4xx/5xx paths (`/api/users/99`, `/api/products/999`,
 `/api/orders/ORD-9999`, invalid IDs). Distinguish:
 
-- **4xx** = client errors. Expected for the "not found" test routes — check the
+- **4xx** = client errors. Expected for the "not found" test routes. Check the
   status distribution in the Services dashboard rather than chasing them.
 - **5xx** = real service faults worth investigating.
 

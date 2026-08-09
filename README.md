@@ -9,7 +9,7 @@ An end-to-end **observability platform** for the
 [secure-pipeline](https://github.com/wazaglo/secure-pipeline) DevSecOps CI/CD stack.
 It monitors **24+ API endpoints** across **5 OTel-instrumented microservices** plus the
 security tooling (DefectDojo, SonarQube) using **Prometheus**, **Grafana**, **Loki**,
-**Tempo**, the **OpenTelemetry Collector**, and **Alertmanager** — everything in **Docker**, no Kubernetes.
+**Tempo**, the **OpenTelemetry Collector**, and **Alertmanager**, everything in **Docker**, no Kubernetes.
 
 ```
        load-generator
@@ -33,7 +33,7 @@ security tooling (DefectDojo, SonarQube) using **Prometheus**, **Grafana**, **Lo
 
 **The companion project** [secure-pipeline](https://github.com/wazaglo/secure-pipeline) is a
 security-first CI/CD pipeline (Gitleaks → Bandit → Trivy → Syft → SonarQube → DefectDojo)
-deployed to AWS EC2 via Terraform. This repository observes it — and the demo microservice
+deployed to AWS EC2 via Terraform. This repository observes it and the demo microservice
 stack that exercises the pipeline's CI checks.
 
 ---
@@ -58,7 +58,7 @@ stack that exercises the pipeline's CI checks.
 | product-service | Go 1.25 | 8002 | products + stock |
 | order-service | Go 1.25 | 8003 | orders, places payments |
 | payment-service | Python | 8004 | payments, refunds, webhooks |
-| load-generator | Python | — | 30 weighted calls/min exercising all 24+ endpoints |
+| load-generator | Python | - | 30 weighted calls/min exercising all 24+ endpoints |
 
 All services are instrumented with OpenTelemetry (OTel SDK + `otelhttp` / `otelslog` / `opentelemetry-python`)
 and export traces, metrics, and logs over **OTLP/HTTP** to a single `otelcol` collector.
@@ -94,15 +94,15 @@ flow from the apps through the collector and into the storage backends.
 
 ## Dashboards
 
-**Overview** — full stack health at a glance:
+**Overview**: full stack health at a glance:
 
 ![Overview Dashboard](docs/assets/dashboard-overview.png)
 
-**Latency** — p50 / p95 / p99 response times across all services:
+**Latency**: p50 / p95 / p99 response times across all services:
 
 ![Latency Dashboard](docs/assets/dashboard-latency.png)
 
-**Tracing** — distributed traces via Tempo:
+**Tracing**: distributed traces via Tempo:
 
 ![Tracing Dashboard](docs/assets/dashboard-tracing.png)
 
@@ -110,11 +110,11 @@ flow from the apps through the collector and into the storage backends.
 
 16 rules in `monitoring/prometheus/rules.yml`:
 
-- **Services** — instance down, high latency
-- **Application** — no orders/payments created (`OrderFailures`, `PaymentFailures`), low stock
-- **Infrastructure** — high CPU/memory/disk
-- **Telemetry** — metrics/logs/traces pipeline down, low trace volume
-- **Security** — high-severity DefectDojo findings
+- **Services**: instance down, high latency
+- **Application**: no orders/payments created (`OrderFailures`, `PaymentFailures`), low stock
+- **Infrastructure**: high CPU/memory/disk
+- **Telemetry**: metrics/logs/traces pipeline down, low trace volume
+- **Security**: high-severity DefectDojo findings
 
 ## AWS EC2 deployment
 
@@ -146,7 +146,7 @@ Full docs (MkDocs): [docs/docs/index.md](docs/docs/index.md)
 - [Architecture](docs/docs/architecture.md)
 - [Dashboards](docs/docs/dashboards.md)
 - [Alerts](docs/docs/alerts.md)
-- [Runbooks](docs/docs/runbooks/) — service down, disk full, high error rate, slow traces
+- [Runbooks](docs/docs/runbooks/): service down, disk full, high error rate, slow traces
 - [Deploy to AWS](docs/docs/deploy.md)
 
 ## License

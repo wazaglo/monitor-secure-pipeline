@@ -52,6 +52,6 @@ Findings published by the DefectDojo exporter:
 
 ## Jump to logs from a trace
 
-In Tempo Explore, open any trace, then click **Logs for this span** — the
+In Tempo Explore, open any trace, then click **Logs for this span**. The
 configured `tracesToLogs` mapping uses the span's `service.name`,
 `http.route`, and `http.status_code` attributes to filter Loki.

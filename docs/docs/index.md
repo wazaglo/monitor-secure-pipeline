@@ -5,7 +5,7 @@ An end-to-end **observability platform** for the
 
 It monitors 24+ API endpoints across 5 microservices plus the security tooling
 (DefectDojo, SonarQube) using **Prometheus**, **Grafana**, **Loki**, **Tempo**,
-the **OpenTelemetry Collector**, and **Alertmanager** — everything in Docker.
+the **OpenTelemetry Collector**, and **Alertmanager**, everything in Docker.
 
 ## What it does
 
@@ -28,8 +28,8 @@ See [Architecture](architecture.md) for the full walkthrough.
 
 - **13+ monitored endpoints** proxied through the API gateway, backed by 5 OTel-instrumented services
 - **15+ services** running in Docker (apps, telemetry backends, exporters)
-- **3 signals** — metrics, logs, and traces — correlated in Grafana
-- **Zero Promtail** — logs flow through the OTel Collector using the OTLP/HTTP protocol
+- **3 signals**: metrics, logs, and traces correlated in Grafana
+- **Zero Promtail**: logs flow through the OTel Collector using the OTLP/HTTP protocol
 
 ## Get started
 

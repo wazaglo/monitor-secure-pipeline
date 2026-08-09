@@ -68,6 +68,6 @@ terraform destroy
 
 - In production, restrict the security-group CIDRs in `terraform/main.tf` to
   your office/VPN instead of `0.0.0.0/0`.
-- Grafana default creds are `admin/admin` — change them in
+- Grafana default creds are `admin/admin`, change them in
   `docker-compose.yml` env vars or wire in Grafana provisioning auth.
 - Unattended-upgrades are enabled by the user-data script for patch cadence.

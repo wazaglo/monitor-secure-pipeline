@@ -12,7 +12,7 @@ In Alertmanager (http://localhost:9093), acknowledge the alert. Note the
 Open **Grafana → Overview** and answer three questions:
 
 1. **Is it just one component or the whole stack?** Check the "Up targets"
-   panel — if several targets are down, suspect infrastructure (disk, Docker,
+   panel. If several targets are down, suspect infrastructure (disk, Docker,
    network) before a service bug.
 2. **Errors or latency?** Use the error-rate and P95 latency panels to separate
    an error spike from a performance regression.
