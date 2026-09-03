@@ -11,25 +11,6 @@ It monitors **24+ API endpoints** across **5 OTel-instrumented microservices** p
 security tooling (DefectDojo, SonarQube) using **Prometheus**, **Grafana**, **Loki**,
 **Tempo**, the **OpenTelemetry Collector**, and **Alertmanager**, everything in **Docker**, no Kubernetes.
 
-```
-       load-generator
-            │  HTTP + W3C trace context
-            ▼
-  ┌── api-gateway ──┐   (24+ endpoints)
-  ▼       ▼       ▼
- user   product  order──payment
- service service service──service
-            │  OTLP (traces + metrics + logs)
-            ▼
-    ┌── otelcol ──────┐
-    ▼     ▼      ▼    ▼
- Prometheus   Loki   Tempo ──┐
-    │         (no    │       │ (service graphs + span metrics)
-    │        Promtail) │       ▼
-    └──── Grafana ◄────┘  remote write → Prometheus
-              ▲
-              └──── Alertmanager
-```
 
 **The companion project** [secure-pipeline](https://github.com/wazaglo/secure-pipeline) is a
 security-first CI/CD pipeline (Gitleaks → Bandit → Trivy → Syft → SonarQube → DefectDojo)
