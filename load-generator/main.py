@@ -108,7 +108,7 @@ def call(method, path, body):
 
 
 def main():
-    logging.info("load-generator started — driving traffic through api-gateway")
+    logging.info("load-generator started - driving traffic through api-gateway")
     while True:
         with tracer.start_as_current_span("loadgen.request") as span:
             method, path, body, weight, codes = random.choices(ENDPOINTS, weights=[w for *_, w, _ in ENDPOINTS])[0]
